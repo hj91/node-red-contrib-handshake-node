@@ -1,0 +1,32 @@
+{
+  "name": "node-red-contrib-handshake-node",
+  "version": "1.0.0",
+  "description": "A contrib Node-RED node for handling handshake operations between Bufferstack.IO IIoT Gateway and Industrial Controllers.",
+  "main": "handshake-node.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hj91/node-red-contrib-handshake-node.git"
+  },
+  "keywords": [
+    "node-red",
+    "handshake",
+    "communication",
+    "PLC",
+    "Network"
+  ],
+  "node-red": {
+    "nodes": {
+      "handshake-node": "handshake-node.js"
+    }
+  },
+  "author": "Harshad Joshi",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/hj91/node-red-contrib-handshake-node/issues"
+  },
+  "homepage": "https://github.com/hj91/node-red-contrib-handshake-node#readme"
+}
+
