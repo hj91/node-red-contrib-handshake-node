@@ -43,8 +43,6 @@ Drag and drop the `handshake-node` into your flow. Double-click on the node to c
 
 - **Name**: Assign a unique name for identification.
 - **Delay (ms)**: Time in milliseconds before the node enters a failure state if the expected input is not received.
-- **Initial State**: The initial input state the node expects (`true` or `false`).
-- **Max Failures**: Maximum consecutive failures allowed before entering a permanent failure state.
 
 ### Input
 
