@@ -18,14 +18,12 @@ limitations under the License.
 
 
 <script type="text/javascript">
-    RED.nodes.registerType('handshake-node', {
+    RED.nodes.registerType('handshake-node',{
         category: 'Bufferstack.IO',
         color: '#a6bbcf',
         defaults: {
             name: { value: "" },
-            delay: { value: "", validate: RED.validators.number() },
-            initialState: { value: "true" }, // New field for initial state
-            maxFailures: { value: "", validate: RED.validators.number() } // New field for max failures
+            delay: { value: "", validate: RED.validators.number() }
         },
         inputs: 1,
         outputs: 1,
@@ -38,27 +36,16 @@ limitations under the License.
 
 <script type="text/x-red" data-template-name="handshake-node">
     <div class="form-row">
-        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
     <div class="form-row">
-        <label for="node-input-delay"><i class="icon-clock"></i> Delay (ms)</label>
-        <input type="text" id="node-input-delay" placeholder="2000">
-    </div>
-    <div class="form-row">
-        <label for="node-input-initialState"><i class="icon-toggle-on"></i> Initial State</label>
-        <select id="node-input-initialState">
-            <option value="true">True</option>
-            <option value="false">False</option>
-        </select>
-    </div>
-    <div class="form-row">
-        <label for="node-input-maxFailures"><i class="icon-ban"></i> Max Failures</label>
-        <input type="text" id="node-input-maxFailures" placeholder="3">
+        <label for="node-input-delay"><i class="fa fa-clock-o"></i> Delay (ms)</label>
+        <input type="text" id="node-input-delay" placeholder="Delay in ms">
     </div>
 </script>
 
 <script type="text/x-red" data-help-name="handshake-node">
-    <p>This handshake node toggles its output state based on the received input, expecting alternating true and false inputs. If the expected input is not received within a user-defined delay period, it attempts error recovery up to a maximum failure limit before entering a 'Communication Failed' state.</p>
+    <p>This node implements a handshake mechanism by expecting a change in state (true to false or vice versa) within a specified delay. If the state does not change within this period, it triggers a communication failure.</p>
 </script>
 

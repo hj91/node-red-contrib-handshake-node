@@ -22,53 +22,43 @@ module.exports = function(RED) {
         RED.nodes.createNode(this, config);
         var node = this;
         var timer;
+        var lastState = null;
         var delay = Number(config.delay) || 2000; // Default to 2000 ms if not specified
-        var initialState = config.initialState === "true"; // Configurable initial state
-        var expectedState = initialState;
-        var consecutiveFailures = 0;
-        var maxFailures = Number(config.maxFailures) || 3; // Maximum allowed consecutive failures
 
         function updateStatus(message, color, shape) {
             node.status({fill: color, shape: shape, text: message});
         }
 
-        function initiateTimer() {
-            clearTimeout(timer); // Clear any existing timer
+        function resetTimer() {
+            clearTimeout(timer);
             timer = setTimeout(() => {
-                consecutiveFailures++;
-                if (consecutiveFailures >= maxFailures) {
-                    updateStatus("Communication Failed", "red", "ring");
-                    node.send({ payload: "Communication Failed" });
-                    consecutiveFailures = 0; // Reset failure count
-                } else {
-                    updateStatus("Awaiting expected input", "yellow", "ring");
-                }
-                expectedState = !expectedState; // Toggle expected state
-                initiateTimer(); // Restart timer for continuous monitoring
+                updateStatus("Communication Failed", "red", "ring");
+                node.send({ payload: "Communication Failed" });
             }, delay);
         }
 
         node.on('input', function(msg) {
-            if (msg.payload === expectedState) {
-                clearTimeout(timer); // Stop the failure timer
-                updateStatus("Communicating", "green", "dot");
-                node.send({ payload: !msg.payload }); // Send the opposite of received input
-                expectedState = !expectedState; // Toggle expected state
-                consecutiveFailures = 0; // Reset failure count
-                initiateTimer(); // Restart timer after processing input
+            if (msg.payload === true || msg.payload === false) {
+                if (msg.payload !== lastState) {
+                    lastState = msg.payload;
+                    updateStatus("State changed", "green", "dot");
+                } else {
+                    updateStatus("State unchanged", "yellow", "dot");
+                }
+                resetTimer(); // Reset the timer on every input
+                node.send({ payload: msg.payload });
             } else {
-                updateStatus("Unexpected input", "red", "ring");
-                node.send({ payload: "Unexpected input" });
-                // Do not reset timer to allow for error recovery
+                updateStatus("Invalid input", "red", "ring");
+                node.send({ payload: "Invalid input" });
             }
         });
 
         node.on('close', function() {
-            clearTimeout(timer); // Clear timer on node close
+            clearTimeout(timer);
         });
 
-        // Start the timer when the node is deployed
-        initiateTimer();
+        // Initialize
+        resetTimer();
     }
 
     RED.nodes.registerType("handshake-node", HandshakeNode);
