@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-handshake-node",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A contrib Node-RED node for handling handshake operations between Bufferstack.IO IIoT Gateway and Industrial Controllers.",
   "main": "handshake-node.js",
   "scripts": {
